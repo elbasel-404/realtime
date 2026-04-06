@@ -5,18 +5,22 @@ import { getData } from "./getData";
 
 export default function Home() {
   const [data, setData] = useState("Loading");
+  const [index, setIndex] = useState(0);
 
-  const fetchData = async () => {
-    const result = await getData();
+  const fetchData = async (index: number) => {
+    const result = await getData(index);
     setData(result);
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchData();
+    setInterval(() => {
+      setIndex((prevIndex) => prevIndex + 1);
     }, 1000);
-    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    fetchData(index);
+  }, [index]);
 
   return (
     <div>
